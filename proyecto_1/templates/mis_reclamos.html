@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reclamos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .flash {
+            width: 90%;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-volver {
+            display: block;
+            margin: 30px auto;
+            text-align: center;
+            padding: 10px 20px;
+            background-color: #337ab7;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            width: fit-content;
+        }
+
+        .btn-volver:hover {
+            background-color: #286090;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mis Reclamos</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Contenido</th>
+                <th>Estado</th>
+                <th>Tiempo de Resolución (días)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamo in reclamos %}
+            <tr>
+                <td>{{ reclamo.id_reclamo }}</td>
+                <td>{{ reclamo.contenido }}</td>
+                <td>{{ reclamo.estado }}</td>
+                <td>{{ reclamo.tiempo_en_proceso or '—' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <a href="{{ url_for('usuario_final_dashboard') }}" class="btn-volver">← Volver al Dashboard</a>
+
+</body>
+</html>

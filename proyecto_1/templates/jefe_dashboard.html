@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel del Departamento - {{ dpto }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+
+    <div class="container">
+        <h1 class="mb-4 text-center">Panel de {{ dpto }}</h1>
+
+        <div class="d-grid gap-3 col-6 mx-auto">
+            <a href="{{ url_for('ver_analiticas', departamento = dpto) }}" class="btn btn-primary btn-lg">Analítica</a>
+            <a href="{{ url_for('manejar_reclamos', departamento = dpto, rol = rol) }}" class="btn btn-warning btn-lg">Manejar Reclamos</a>
+            <button class="btn btn-info btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#guiaUso" aria-expanded="false" aria-controls="guiaUso">
+                Ayuda
+            </button>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg">Salir</a>
+        </div>
+
+        <div class="collapse mt-4" id="guiaUso">
+            <div class="card card-body">
+                <h4>Guía de uso del dashboard</h4>
+                <ul>
+                    <li><strong>Analítica:</strong> Visualizá métricas clave como cantidad de reclamos, tiempos promedio de resolución, etc.</li>
+                    <li><strong>Manejar reclamos:</strong> Revisá y actualizá los reclamos de tu departamento.</li>
+                    <li><strong>Salir:</strong> Cerrá sesión y protegé tus datos.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</body>
+</html>

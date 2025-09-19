@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Reclamos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-adherirse {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-volver {
+            background-color: #2196F3;
+            color: white;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .flash {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .flash.success { background-color: #d4edda; color: #155724; }
+        .flash.danger { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Listado de Reclamos</h1>
+
+    <form method="get" action="{{ url_for('listar_reclamos') }}">
+        <label for="departamento">Filtrar por Departamento:</label>
+        <select name="departamento" id="departamento" onchange="this.form.submit()">
+            <option value="">-- Todos --</option>
+            <option value="Maestranza">Maestranza</option>
+            <option value="Soporte_Informatico">Soporte Informatico</option>
+            <option value="Secretaria_Tecnica">Secretaria Tecnica</option>
+        </select>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Reclamo</th>
+                <th>Fecha y Hora</th>
+                <th>Contenido</th>
+                <th>Departamento</th>
+                <th>Adherentes</th>
+                <th>Estado</th>
+                <th>Tiempo en Proceso</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamo in reclamos %}
+            <tr>
+                <td>{{ reclamo.id_reclamo }}</td>
+                <td>{{ reclamo.fecha_y_hora }}</td>
+                <td>{{ reclamo.contenido }}</td>
+                <td>{{ reclamo.departamento }}</td>
+                <td>{{ reclamo.n_adherentes }}</td>
+                <td>{{ reclamo.estado }}</td>
+                <td>{{ reclamo.tiempo_en_proceso }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('adherirse_a_reclamo', id_reclamo=reclamo.id_reclamo) }}">
+                        <button type="submit" class="btn btn-adherirse">Adherirse</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px;">
+
+        {% if page > 1 %}
+            <a href="{{ url_for('listar_reclamos', page=page-1) }}" class="btn btn-volver">← Página anterior</a>
+        {% endif %}
+
+        {% if total > page * per_page %}
+            <a href="{{ url_for('listar_reclamos', page=page+1) }}" class="btn btn-volver" style="margin-left: 10px;">
+            Página siguiente →
+            </a>
+        {% endif %}
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+
+
+    <a href="{{ url_for('usuario_final_dashboard') }}" class="btn btn-volver">← Volver al Dashboard</a>
+</body>
+</html>

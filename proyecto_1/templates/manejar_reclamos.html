@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Manejar Reclamos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap para estilos -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            margin: 2px 0;
+        }
+
+        .volver {
+            margin-top: 20px;
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .volver:hover {
+            background-color: #5a6268;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Listado de Reclamos del Departamento</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID Reclamo</th>
+                <th>ID Usuario</th>
+                <th>Contenido</th>
+                <th>Adheridos</th>
+                <th>Fecha y Hora</th>
+                <th>Estado</th>
+                <th>Tiempo de Resolución</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamo in reclamos %}
+            <tr>
+                <td>{{ reclamo.id_reclamo }}</td>
+                <td>{{ reclamo.id_creador }}</td>
+                <td>{{ reclamo.contenido }}</td>
+                <td>{{ reclamo.n_adherentes }}</td>
+                <td>{{ reclamo.fecha_y_hora }}</td>
+                <td>{{ reclamo.estado }}</td>
+                <td>{{ reclamo.tiempo_en_proceso }}</td>
+                <td>
+                    <form action="{{ url_for('iniciar_resolucion', id_reclamo=reclamo.id_reclamo) }}" method="GET">
+                        <button type="submit" class="btn btn-success btn-sm">Manejar</button>
+                    </form>
+
+                    {% if rol == 'Jefe_Secretaria_Tecnica' %}
+                    <form method="POST" action="{{ url_for('derivar_reclamo', id_reclamo=reclamo.id_reclamo) }}">
+                        <div class="form-group">
+                            <label for="nuevo_dpto">Derivar a:</label>
+                            <select name="nuevo_dpto" class="form-control form-control-sm" required>
+                                <option value="Maestranza">Maestranza</option>
+                                <option value="Soporte_Informatico">Soporte Informático</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Derivar</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('jefe_dashboard') }}" class="volver">⬅ Volver al Dashboard</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

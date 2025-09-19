@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard del Departamento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .section {
+            margin-top: 40px;
+        }
+
+        h2, h3 {
+            color: #34495e;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 6px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #ecf0f1;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+        }
+
+        img {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+        }
+
+        .btn-volver, .btn-descarga {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-volver {
+            background-color: #6c757d;
+        }
+
+        .btn-volver:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-descarga {
+            background-color: #007bff;
+            margin-right: 10px;
+        }
+
+        .btn-descarga:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            display: inline;
+        }
+
+        select {
+            padding: 8px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Dashboard - Departamento {{ departamento }}</h1>
+
+    <div class="section">
+        <h2>Total de Reclamos</h2>
+        <p style="font-size: 24px; font-weight: bold;">{{ total }}</p>
+    </div>
+
+    <div class="section">
+        <h3>Distribución por Estado</h3>
+        <img src="{{ url_for('static', filename=ruta_torta.split('static/')[-1]) }}" alt="Gráfico de Torta">
+    </div>
+
+    <div class="section">
+        <h3>Mediana del Tiempo de Resolución</h3>
+        <ul>
+            <li><strong>En proceso:</strong> {{ mediana_proceso }}</li>
+            <li><strong>Resueltos:</strong> {{ mediana_resueltos }}</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>Palabras Clave (Nube de Palabras)</h3>
+        {% if ruta_nube %}
+            <img src="{{ url_for('static', filename=ruta_nube.split('static/')[-1]) }}" alt="Nube de Palabras">
+        {% else %}
+            <p>No hay datos suficientes para generar la nube de palabras.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <form onsubmit="return descargarReporte(this);">
+            <select name="formato" id="formato" required>
+                <option value="pdf">📄 Descargar PDF</option>
+                <option value="html">🌐 Descargar HTML</option>
+            </select>
+            <button type="submit" class="btn-descarga">Descargar Reporte</button>
+        </form>
+        <a href="{{ url_for('jefe_dashboard') }}" class="btn-volver">⬅ Volver al Dashboard</a>
+    </div>
+</div>
+
+<script>
+    function descargarReporte(form) {
+        const formato = document.getElementById('formato').value;
+        const url = "{{ url_for('descargar_reporte', departamento=departamento, formato='FORMATO') }}".replace("FORMATO", formato);
+        window.location.href = url;
+        return false; // Evita recargar el formulario
+    }
+</script>
+</body>
+</html>
