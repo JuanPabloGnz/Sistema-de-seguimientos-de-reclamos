@@ -115,6 +115,20 @@
         </tbody>
     </table>
 
+    <div style="margin-top: 20px;">
+
+        {% if page > 1 %}
+            <a href="{{ url_for('manejar_reclamos', departamento = departamento, page=page-1) }}" class="btn btn-volver">← Página anterior</a>
+        {% endif %}
+
+        {% if total > page * per_page %}
+            <a href="{{ url_for('manejar_reclamos', departamento = departamento, page=page+1) }}" class="btn btn-volver" style="margin-left: 10px;">
+            Página siguiente →
+            </a>
+        {% endif %}
+
+    </div>
+
     <a href="{{ url_for('jefe_dashboard') }}" class="volver">⬅ Volver al Dashboard</a>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
