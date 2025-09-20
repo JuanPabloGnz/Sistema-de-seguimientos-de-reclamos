@@ -281,7 +281,7 @@ def manejar_reclamos(departamento):
     rol = session.get('rol')
     try:
         reclamos, total = gestor_reclamos.listar_reclamos_paginados(page=page, per_page=per_page, departamento=departamento)
-        return render_template("manejar_reclamos.html", reclamos=reclamos, departamento=departamento, page=page, per_page=per_page, total=total, rol=rol)
+        return render_template("manejar_reclamos.html", reclamos=reclamos,departamento=departamento, page=page, per_page=per_page, total=total, rol=rol)
     except Exception as e:
         flash(str(e), 'danger')
         return render_template("manejar_reclamos.html", reclamos=[], departamento=departamento, page=1, per_page=per_page, total=0)
