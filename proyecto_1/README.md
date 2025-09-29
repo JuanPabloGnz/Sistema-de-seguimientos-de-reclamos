@@ -6,8 +6,8 @@ Esta es una aplicación web construida con el framework [Flask](https://flask.pa
 ---
 ## 🏗Arquitectura General
 
-Explica brevemente cómo está organizado el código (funciones y/o clases)
-El codigo se organiza en 
+El sistema está dividido y organizado en distintas carpetas. A continuación se detalla el contenido de cada una de estas:
+
 El diagrama de relaciones entre clases está disponible en la carpeta [docs](./docs) del proyecto.
 
 Los Repositorios Concretos se encuentran en la carpeta [modules](./modules) en el archivo repositorio_concreto.py
@@ -20,7 +20,7 @@ Los modelos para la base de datos en la carpeta [modules](./modules) en el archi
 
 Por ultimo modulos especificos como graficador.py y monticulos.py que se encuentran en la carpeta [modules](./modules) 
 
-En la carpeta [templates](./templates) tenemos todas las paginas html a las que los usuarios iran accediendo en el sistema.
+En la carpeta [templates](./templates) tenemos todas las paginas html a las que los usuarios irán accediendo en el sistema.
 
 En la carpeta [data](./data) se almacena nuestra base de datos
 
