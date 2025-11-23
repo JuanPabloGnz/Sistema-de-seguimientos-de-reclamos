@@ -86,7 +86,7 @@ El Secretario Técnico posee todas las funcionalidades de un Jefe de Departament
 
 ---
 
-## 🙎‍♀️🙎‍♂️Autores
+## 🙎‍♂️🙎‍♂️Autores
 
 - Brehm Tomás Nahuel
 - Gonzalez Juan Pablo
